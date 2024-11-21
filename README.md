@@ -10,7 +10,7 @@ This project implements and extends the Nutrition5K paper to predict nutritional
 ## Web Interface Demo
 
 <p align="center">
-  <img src="./assets/interface_demo.png" width="600" alt="Web Interface Demo">
+  <img src="./interface.png" width="600" alt="Web Interface Demo">
   <br>
   <em>Web interface showing real-time nutrition prediction from food images</em>
 </p>

@@ -1,16 +1,36 @@
+
+
+
+
 # Nutrition5K Project
 
 ## Overview
-This project implements and extends the Nutrition5K paper, which aims to predict nutritional content from food images. The model takes both RGB images and depth information as input to predict calories, mass, and macronutrient content (fat, carbohydrates, protein).
+This project implements and extends the Nutrition5K paper to predict nutritional content from food images. The model takes both RGB images and depth information as input to predict calories, mass, and macronutrient content (fat, carbohydrates, protein).
 
-## Table of Contents
-- [Installation](#installation)
-- [Project Structure](#project-structure)
-- [Model Architecture](#model-architecture)
-- [Training](#training)
-- [Evaluation](#evaluation)
-- [Web Interface](#web-interface)
-- [Results](#results)
+## Web Interface Demo
+
+<p align="center">
+  <img src="./assets/interface_demo.png" width="600" alt="Web Interface Demo">
+  <br>
+  <em>Web interface showing real-time nutrition prediction from food images</em>
+</p>
+
+## Features
+- Dual input processing (RGB + depth information)
+- Real-time prediction of:
+  - Calories (kcal)
+  - Mass (g)
+  - Fat (g)
+  - Carbohydrates (g)
+  - Protein (g)
+- User-friendly web interface
+- Instant results display
+
+## Model Architecture
+The model uses a modified InceptionV3 architecture with:
+- 6-channel input (RGB + depth)
+- Multi-task prediction heads
+- Shared feature extractor
 
 ## Installation
 
@@ -22,7 +42,6 @@ pip install numpy pandas
 pip install flask flask-cors
 pip install ngrok-api pyngrok
 pip install Pillow tqdm
-pip install matplotlib seaborn
 ```
 
 ### Setup
@@ -32,116 +51,30 @@ git clone [your-repo-url]
 cd nutrition5k-project
 ```
 
-2. Prepare the data:
-- Place training images in `data/images/`
-- Place depth frames in `data/frames/`
-- Ensure metadata CSV is available
-
-## Project Structure
-```
-nutrition5k-project/
-│
-├── data/
-│   ├── images/          # RGB images
-│   ├── frames/          # Depth frames
-│   └── metadata.csv     # Nutritional annotations
-│
-├── models/
-│   ├── model.py         # Model architecture
-│   └── normalizer.py    # Data normalization
-│
-├── training/
-│   ├── dataset.py       # Dataset class
-│   └── train.py         # Training script
-│
-├── evaluation/
-│   ├── evaluate.py      # Evaluation metrics
-│   └── results/         # Evaluation results
-│
-├── web_interface/
-│   ├── app.py          # Flask application
-│   └── templates/      # HTML templates
-│
-└── outputs/
-    ├── best_model.pth   # Saved model
-    └── results/         # Training results
+2. Install dependencies:
+```bash
+pip install -r requirements.txt
 ```
 
-## Model Architecture
-The model uses a modified InceptionV3 architecture with:
-- 6-channel input (RGB + depth)
-- Multi-task prediction heads
-- Shared feature extractor
+## Usage
 
+### Local Deployment
+1. Start the server:
 ```python
-class NutritionPredictor(nn.Module):
-    def __init__(self, input_channels=6):
-        # Architecture details...
+python app.py
 ```
 
-## Training
+2. Access the web interface at `http://localhost:5000`
 
-### Data Preparation
+### Cloud Deployment (using ngrok)
+1. Get your ngrok auth token from https://dashboard.ngrok.com/signup
+2. Run the server with ngrok:
 ```python
-# Load and preprocess data
-train_dataset = Nutrition5kDataset(x_train, y_train, mode='train', normalizer=normalizer)
-test_dataset = Nutrition5kDataset(x_test, y_test, mode='test', normalizer=normalizer)
+python app.py --ngrok-token YOUR_TOKEN
 ```
 
-### Training Process
-```python
-# Train model
-model = NutritionPredictor(input_channels=6)
-results, history = train_model(train_loader, test_loader, model, 
-                             num_epochs=2000, device='cuda')
-```
+## Evaluation Results
 
-### Training Parameters
-- Learning rate: 1e-4
-- Optimizer: RMSprop
-- Batch size: 32
-- Early stopping patience: 200
-- Minimum epochs: 100
-
-## Evaluation
-Evaluation metrics include:
-- Mean Absolute Error (MAE)
-- MAE Percentage
-- RMSE
-- Correlation
-
-```python
-# Run evaluation
-results = evaluate_model()
-```
-
-### Results Files
-The evaluation generates several CSV files:
-1. `[metric]_predictions.csv`: Detailed predictions
-2. `summary_metrics.csv`: Overall performance metrics
-3. `error_distribution.csv`: Error analysis
-4. `percentage_error_distribution.csv`: Relative errors
-5. `paper_comparison.csv`: Comparison with original paper
-
-## Web Interface
-
-### Setup
-1. Get ngrok authentication token
-2. Run the Flask application:
-```python
-start_server()
-```
-
-### Features
-- Image upload
-- Real-time prediction
-- Visualization of results
-- Error handling
-- Debug information
-
-## Results
-
-### Performance Metrics
 | Metric    | MAE    | MAE%   | Paper MAE% |
 |-----------|--------|--------|------------|
 | Calories  | [Value]| [Value]| 26.1%      |
@@ -150,10 +83,16 @@ start_server()
 | Carbs     | [Value]| [Value]| 31.9%      |
 | Protein   | [Value]| [Value]| 29.5%      |
 
-### Model Comparisons
-- Comparison with paper results
-- Ablation studies
-- Performance analysis
+## Project Structure
+```
+nutrition5k-project/
+├── assets/              # Images and resources
+│   └── interface_demo.png
+├── models/             # Model architecture
+├── utils/             # Helper functions
+├── app.py            # Flask application
+└── requirements.txt  # Dependencies
+```
 
 ## Citation
 ```bibtex
@@ -165,6 +104,30 @@ start_server()
 }
 ```
 
+## License
+[Your License]
+
+## Setup Instructions to Add Interface Screenshot:
+
+1. Create assets directory:
+```bash
+mkdir -p assets
+```
+
+2. Save interface screenshot:
+- Name: `interface_demo.png`
+- Location: `./assets/interface_demo.png`
+- Size: Optimized for web (< 1MB)
+
+3. Add to README:
+```markdown
+<p align="center">
+  <img src="./assets/interface_demo.png" width="600" alt="Web Interface Demo">
+</p>
+```
+
+## Acknowledgments
+- Original Nutrition5K paper authors
 
 
 ## Contact
